@@ -1,0 +1,5 @@
+eclipse.preferences.version=1
+encoding//src/ws/customer/service/DBCustomerService.java=UTF-8
+encoding//src/ws/customer/service/DBCustomerServiceLocator.java=UTF-8
+encoding//src/ws/customer/service/DBCustomerServicePortType.java=UTF-8
+encoding//src/ws/customer/service/DBCustomerServiceSoap11BindingStub.java=UTF-8

@@ -1,0 +1,15 @@
+<service name="DBCustomerService" scope="application">
+	<description>
+		Customer POJO Service
+	</description>
+	<messageReceivers>
+		<messageReceiver
+			mep="http://www.w3.org/ns/wsdl/in-out"
+			class="org.apache.axis2.rpc.receivers.RPCMessageReceiver" />
+		<messageReceiver
+			mep="http://www.w3.org/ns/wsdl/in-out"
+			class="org.apache.axis2.rpc.receivers.RPCMessageReceiver" />
+	</messageReceivers>
+	<parameter name="ServiceClass">ws.customer.service.DBCustomerService
+	</parameter>
+</service>
