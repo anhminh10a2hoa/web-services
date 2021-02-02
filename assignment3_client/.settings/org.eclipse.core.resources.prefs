@@ -1,0 +1,6 @@
+eclipse.preferences.version=1
+encoding//src/ws/customer/data/xsd/Customer.java=UTF-8
+encoding//src/ws/customer/service/CustomerSpringService.java=UTF-8
+encoding//src/ws/customer/service/CustomerSpringServiceLocator.java=UTF-8
+encoding//src/ws/customer/service/CustomerSpringServicePortType.java=UTF-8
+encoding//src/ws/customer/service/CustomerSpringServiceSoap11BindingStub.java=UTF-8

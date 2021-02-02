@@ -1,0 +1,52 @@
+<serviceGroup>
+    
+<!-- Set the scope to application -->
+<service name="SpringInit" class="ws.customer.service.SpringInit" scope="application">
+<description>
+This web service initializes Spring.
+</description>
+<parameter name="ServiceClass">ws.customer.service.SpringInit</parameter>
+<!--
+ServiceTCCL property makes sure that the Spring class loader is used for the Web service,
+allowing it to properly instantiate the Spring application context -->
+<parameter name="ServiceTCCL">composite</parameter>
+<!--
+The load-on-startup variable is a must-have so that the service loads up immediately on startup,
+creating the Spring application context.
+-->
+<parameter name="load-on-startup">true</parameter>
+<operation name="springInit">
+    
+ <!-- Make sure that you have the following messageReceiver tag:
+ <messageReceiver class="org.apache.axis2.receivers.RawXMLINOutMessageReceiver"/>
+ -->
+ <messageReceiver class="org.apache.axis2.receivers.RawXMLINOutMessageReceiver"/>
+</operation>
+</service>
+<!-- Set the scope to application -->
+<service name="CustomerSpringService" scope="application">
+<description>
+Customer Spring POJO Axis2 AAR deployment
+</description>
+<parameter name="ServiceClass">ws.customer.service.CustomerSpringService</parameter>
+<!-- The ServiceObjectSupplier provides the CustomerSpringtService service with the Spring
+ application context, making it "Spring Aware."
+ -->
+<parameter name="ServiceObjectSupplier">org.apache.axis2.extensions.spring.receivers.SpringAppContextAwareObjectSupplier</parameter>
+<!-- <parameter name="ServiceObjectSupplier">org.apache.axis2.extensions.spring.receivers.SpringServletContextObjectSupplier</parameter>
+ -->
+<!-- The SpringBeanName points to the name of the bean associated with this Web service,
+ which is defined in the applicationContext.xml file (CustomerSpringService).
+-->
+<parameter name="SpringBeanName" locked="false">customerSpringService</parameter>
+<parameter name="SpringContextLocation">conf/applicationContext.xml</parameter>
+<messageReceivers>
+<messageReceiver mep="http://www.w3.org/ns/wsdl/in-only"
+ class="org.apache.axis2.rpc.receivers.RPCInOnlyMessageReceiver"/>
+<messageReceiver mep="http://www.w3.org/ns/wsdl/in-out"
+ class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+<messageReceiver mep="http://www.w3.org/ns/wsdl/in-out"
+ class="org.apache.axis2.rpc.receivers.RPCMessageReceiver"/>
+</messageReceivers>
+</service>
+</serviceGroup>
