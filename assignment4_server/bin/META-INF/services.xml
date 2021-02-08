@@ -1,0 +1,16 @@
+<service name="Assignment4">
+	<description>
+		The AXIOM greeting service.
+	</description>
+	<parameter name="ServiceClass">service.soap.Assignment4</parameter>
+	<operation name="getFileList">
+		<!-- Remember to define the class attribute -->
+		<messageReceiver
+			class="org.apache.axis2.receivers.RawXMLINOutMessageReceiver" />
+	</operation>
+	<operation name="writeToFile">
+		<!-- Remember to define the class attribute -->
+		<messageReceiver
+			class="org.apache.axis2.receivers.RawXMLINOutMessageReceiver" />
+	</operation>
+</service>
