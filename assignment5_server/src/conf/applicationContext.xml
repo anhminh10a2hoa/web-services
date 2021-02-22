@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd">
+
+
+	<!--Make sure to define class attribute for bean tag -->
+	<bean id="applicationContext"
+		class="org.apache.axis2.extensions.spring.receivers.ApplicationContextHolder" />
+	<!--Make sure to define class attribute for bean tag -->
+	<bean id="employeeSpringService"
+		class="ws.employee.service.EmployeeSpringService">
+		<property name="employees" ref="employees_hashtable" />
+	</bean>
+
+
+	<util:map id="employees_hashtable"
+		map-class="java.util.Hashtable" key-type="java.lang.Integer"
+		value-type="ws.employee.data.Employee">
+		<!--Here we use value-ref -->
+		<entry key="1" value-ref="employeeBean_1" />
+		<entry key="2" value-ref="employeeBean_2" />
+		<entry key="3" value-ref="employeeBean_3" />
+		<entry key="4" value-ref="employeeBean_4" />
+		<entry key="5" value-ref="employeeBean_5" />
+	</util:map>
+
+	<bean id="employeeBean_1" class="ws.employee.data.Employee">
+		<property name="employeeName" value="Minh Hoang" />
+		<property name="employeeId" value="1" />
+		<property name="job" value="Software Engineer" />
+		<property name="salary" value="3000.00" />
+		<property name="hireDate" value="01/06/2000" />
+	</bean>
+
+	<bean id="employeeBean_2" class="ws.employee.data.Employee">
+		<property name="employeeName" value="Tien Doan" />
+		<property name="employeeId" value="2" />
+		<property name="job" value="Software Engineer" />
+		<property name="salary" value="1500.00" />
+		<property name="hireDate" value="01/06/2000" />
+	</bean>
+
+	<bean id="employeeBean_3" class="ws.employee.data.Employee">
+		<property name="employeeName" value="Binh Vo" />
+		<property name="employeeId" value="3" />
+		<property name="job" value="Web Developement" />
+		<property name="salary" value="2500.00" />
+		<property name="hireDate" value="01/06/2000" />
+	</bean>
+
+	<bean id="employeeBean_4" class="ws.employee.data.Employee">
+		<property name="employeeName" value="Trang Phan" />
+		<property name="employeeId" value="4" />
+		<property name="job" value="Marketing" />
+		<property name="salary" value="3000.00" />
+		<property name="hireDate" value="01/06/2000" />
+	</bean>
+
+	<bean id="employeeBean_5" class="ws.employee.data.Employee">
+		<property name="employeeName" value="Toan Nguyen" />
+		<property name="employeeId" value="5" />
+		<property name="job" value="Web Developement" />
+		<property name="salary" value="3000.00" />
+		<property name="hireDate" value="01/06/2000" />
+	</bean>
+</beans>

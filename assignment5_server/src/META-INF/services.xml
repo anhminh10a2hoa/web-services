@@ -1,0 +1,59 @@
+<serviceGroup>
+	<!-- Set the scope to application -->
+	<service name="AXIOMSpringInit"
+		class="ws.employee.service.SpringInit" scope="application">
+		<description>
+			This web service initialises Spring.
+		</description>
+		<parameter name="ServiceClass">ws.employee.service.SpringInit</parameter>
+		<!-- ServiceTCCL property makes sure that the Spring class loader is used 
+			for the Web service, allowing it to properly instantiate the Spring application 
+			context -->
+		<parameter name="ServiceTCCL">composite</parameter>
+		<!-- The load-on-startup variable is a must-have so that the service loads 
+			up immediately on startup, creating the Spring application context. -->
+		<parameter name="load-on-startup">true</parameter>
+		<operation name="springInit">
+
+			<!-- Make sure that you have the following messageReceiver tag: <messageReceiver 
+				class="org.apache.axis2.receivers.RawXMLINOutMessageReceiver"/> -->
+			<messageReceiver
+				class="org.apache.axis2.receivers.RawXMLINOutMessageReceiver" />
+		</operation>
+	</service>
+	<service name="AXIOMSpringEmployeeService">
+		<description>
+			AXIOM Employee service.
+		</description>
+		<parameter name="ServiceClass">
+			ws.employee.service.EmployeeSpringService
+		</parameter>
+		<parameter name="ServiceObjectSupplier">org.apache.axis2.extensions.spring.receivers.SpringAppContextAwareObjectSupplier
+		</parameter>
+		<!-- The SpringBeanName points to the name of the bean associated with 
+			this Web service, which is defined in the applicationContext.xml file (EmployeeSpringService). -->
+		<parameter name="SpringBeanName" locked="false">employeeSpringService
+		</parameter>
+		<parameter name="SpringContextLocation">conf/applicationContext.xml</parameter>
+		<operation name="getEmployeeByID">
+			<!-- Remember to define the class attribute -->
+			<messageReceiver
+				class="org.apache.axis2.receivers.RawXMLINOutMessageReceiver" />
+		</operation>
+		<operation name="getListEmployeesByJob">
+			<!-- Remember to define the class attribute -->
+			<messageReceiver
+				class="org.apache.axis2.receivers.RawXMLINOutMessageReceiver" />
+		</operation>
+		<operation name="updateEmployee">
+			<!-- Remember to define the class attribute -->
+			<messageReceiver
+				class="org.apache.axis2.receivers.RawXMLINOutMessageReceiver" />
+		</operation>
+		<operation name="salaryComparisonEmployee">
+			<!-- Remember to define the class attribute -->
+			<messageReceiver
+				class="org.apache.axis2.receivers.RawXMLINOutMessageReceiver" />
+		</operation>
+	</service>
+</serviceGroup>

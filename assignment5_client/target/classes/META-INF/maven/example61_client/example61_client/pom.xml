@@ -1,0 +1,142 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>example61_client</groupId>
+  <artifactId>example61_client</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>AXIOM Spring Example 11-1 Client</name>
+  <properties>
+  <main_class_name>client.AXIOMSpringClient</main_class_name>
+  </properties>
+ 
+  <build>
+    <sourceDirectory>src</sourceDirectory>
+    <plugins>
+      <plugin>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.8.0</version>
+        <configuration>
+          <source>1.8</source>
+          <target>1.8</target>
+        </configuration>
+      </plugin>
+ 
+    
+    <plugin>
+     <!--  Build an executable JAR -->
+      <groupId>org.apache.maven.plugins</groupId>
+      <artifactId>maven-jar-plugin</artifactId>
+      <version>3.1.0</version>
+      <configuration>
+        <archive>
+          <manifest>
+            <addClasspath>true</addClasspath>
+            <classpathPrefix>lib/</classpathPrefix>
+                   <mainClass>${main_class_name}</mainClass>
+          </manifest>
+        </archive>
+      </configuration>
+    </plugin>
+    
+    
+    <!-- Here we create maven-assembly-plugin to create a jar file with all dependencies -->
+    <plugin>
+    <artifactId>maven-assembly-plugin</artifactId>
+    <executions>
+      <execution>
+        <phase>package</phase>
+        <goals>
+          <goal>single</goal>
+        </goals>
+      </execution>
+    </executions>
+    <configuration>
+      <archive>
+        <manifest>
+          <addClasspath>true</addClasspath>
+                <mainClass>${main_class_name}</mainClass>
+        </manifest>
+      </archive>
+      <descriptorRefs>
+        <descriptorRef>jar-with-dependencies</descriptorRef>
+      </descriptorRefs>
+    </configuration>
+  </plugin>
+    
+      
+        <!--  The following plugin is to make an executable jar file using spring boot -->
+      <plugin>
+  <groupId>org.springframework.boot</groupId>
+  <artifactId>spring-boot-maven-plugin</artifactId>
+  <executions>
+    <execution>
+      <goals>
+        <goal>repackage</goal>
+      </goals>
+      <configuration>
+        <classifier>spring-boot</classifier>
+              <mainClass>${main_class_name}</mainClass>
+      </configuration>
+    </execution>
+  </executions>
+</plugin>
+<!-- Here we use the maven-shade-plugin to package all dependencies into one jar. It can also be used to build
+ an executable jar by specifying the main class. This plugin merges content of specific files instead of overwriting
+  them. This is needed when there are resource files that are have the same name across the jars and the
+   plugin tries to package all the resource files -->
+<plugin>
+  <groupId>org.apache.maven.plugins</groupId>
+  <artifactId>maven-shade-plugin</artifactId>
+  <version>3.2.0</version>
+  <executions>
+    <execution>
+      <goals>
+        <goal>shade</goal>
+      </goals>
+      <configuration>
+        <shadedArtifactAttached>true</shadedArtifactAttached>
+        <transformers>
+          <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                 <mainClass>${main_class_name}</mainClass>
+          </transformer>
+        </transformers>
+      </configuration>
+    </execution>
+  </executions>
+</plugin>
+    </plugins>
+  </build>
+ 
+   <dependencies>
+  <!-- https://mvnrepository.com/artifact/org.apache.axis2/axis2-kernel -->
+<dependency>
+    <groupId>org.apache.axis2</groupId>
+    <artifactId>axis2-kernel</artifactId>
+    <version>1.7.9</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.apache.axis2/axis2-adb -->
+<dependency>
+    <groupId>org.apache.axis2</groupId>
+    <artifactId>axis2-adb</artifactId>
+    <version>1.7.9</version>
+</dependency>
+<dependency>
+  <groupId>org.apache.axis2</groupId>
+  <artifactId>axis2-transport-local</artifactId>
+  <version>1.7.9</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.apache.axis2/axis2-transport-http -->
+<dependency>
+    <groupId>org.apache.axis2</groupId>
+    <artifactId>axis2-transport-http</artifactId>
+    <version>1.7.9</version>
+</dependency>
+<!-- https://mvnrepository.com/artifact/org.apache.axis2/axis2-jaxws -->
+<dependency>
+    <groupId>org.apache.axis2</groupId>
+    <artifactId>axis2-jaxws</artifactId>
+    <version>1.7.9</version>
+</dependency>
+ 
+ 
+  </dependencies>
+</project>
