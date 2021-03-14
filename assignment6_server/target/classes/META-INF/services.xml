@@ -1,0 +1,30 @@
+<service name="soap_object_exchange" scope="application">
+    <description> Object Upload SOAP Service </description>
+    <messageReceivers>
+        <!--class="org.apache.axis2.receivers.RawXMLINOutMessageReceiver" -->
+        <messageReceiver
+            mep="http://www.w3.org/ns/wsdl/in-out"
+            class="org.apache.axis2.rpc.receivers.RPCMessageReceiver" />
+        <!--class="org.apache.axis2.receivers.RawXMLINOutMessageReceiver" -->
+        <messageReceiver
+            mep="http://www.w3.org/ns/wsdl/in-out"
+            class="org.apache.axis2.rpc.receivers.RPCMessageReceiver" />
+    </messageReceivers>
+    <operation name="uploadOMElement">
+        <!--class="org.apache.axis2.receivers.RawXMLINOutMessageReceiver" -->
+        <messageReceiver
+            class="org.apache.axis2.receivers.RawXMLINOutMessageReceiver" />
+    </operation>
+    <operation name="uploadImageOMElement">
+        <!--class="org.apache.axis2.receivers.RawXMLINOutMessageReceiver" -->
+        <messageReceiver
+            class="org.apache.axis2.receivers.RawXMLINOutMessageReceiver" />
+    </operation>
+    <operation name="downloadFile">
+		<!-- Remember to define the class attribute -->
+		<messageReceiver
+			class="org.apache.axis2.receivers.RawXMLINOutMessageReceiver" />
+	</operation>
+    <parameter name="ServiceClass">soap.service.ObjectExchangeService</parameter>
+    <parameter name="enableMTOM">true</parameter>
+</service>
