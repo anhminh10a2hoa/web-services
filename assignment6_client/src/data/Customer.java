@@ -10,7 +10,7 @@ public class Customer implements Serializable {
 	private Integer customerID;
 	private String image;
 	private String job;
-	private Date hireDate;
+	private String hireDate;
 	private Double salary;
 
 	public Customer() {
@@ -18,7 +18,7 @@ public class Customer implements Serializable {
 		customerID = 0;
 		image = "Image not known";
 		job = "Job not known";
-		hireDate = new Date(0);
+		hireDate = "Date not known";
 		salary = 0.00;
 	}
 
@@ -62,11 +62,11 @@ public class Customer implements Serializable {
 		return salary;
 	}
 
-	public void setHireDate(Date hireDate) {
+	public void setHireDate(String hireDate) {
 		this.hireDate = hireDate;
 	}
 
-	public Date getHireDate() {
+	public String getHireDate() {
 		return this.hireDate;
 	}
 
@@ -75,7 +75,7 @@ public class Customer implements Serializable {
 		return customerID + " " + customerName + " " + image + " " + job + " " + hireDate + " " + salary;
 	}
 
-	public Customer(String customerName, int customerID, String image, String job, Date hireDate, double salary) {
+	public Customer(String customerName, int customerID, String image, String job, String hireDate, double salary) {
 		this.customerName = customerName;
 		this.customerID = customerID;
 		this.image = image;
