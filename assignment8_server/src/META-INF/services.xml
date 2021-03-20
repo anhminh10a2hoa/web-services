@@ -1,0 +1,18 @@
+<service name="assignment_8" scope="application">
+	<description>
+		File Upload POJO Service
+	</description>
+	<messageReceivers>
+		<!-- Attention! For axis2 1.7.4 upward: mep="http://www.w3.org/ns/wsdl/in-out" -->
+		<messageReceiver
+			mep="http://www.w3.org/ns/wsdl/in-out"
+			class="org.apache.axis2.rpc.receivers.RPCMessageReceiver" />
+		<!-- Attention! For axis2 1.7.4 upward: mep="http://www.w3.org/ns/wsdl/in-out" -->
+		<messageReceiver
+			mep="http://www.w3.org/ns/wsdl/in-out"
+			class="org.apache.axis2.rpc.receivers.RPCMessageReceiver" />
+	</messageReceivers>
+	<parameter name="ServiceClass">
+		soap.file.service.FileUploadDownloadService
+	</parameter>
+</service>
