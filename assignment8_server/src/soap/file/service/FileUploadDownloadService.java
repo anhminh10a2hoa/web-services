@@ -12,7 +12,6 @@ import java.sql.Statement;
 import java.util.List;
 
 import data.Customer;
-import data.Product;
 
 import java.util.ArrayList;
 
@@ -114,8 +113,7 @@ public class FileUploadDownloadService {
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery(sql);
 			while(rs.next()) {
-				Product p = new Product();
-				res += rs.getInt(1) + " " + rs.getString(2) + " " + rs.getDouble(3) + "€ \n";
+				res += rs.getInt(1) + " " + rs.getString(2) + " " + rs.getDouble(3) + "€" + " Amount: " + rs.getInt(4) + "\n";
 			}
 		} catch(Exception error) {
 			System.out.println(error);
@@ -131,7 +129,7 @@ public class FileUploadDownloadService {
 		try {
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery(sql);
-			while(rs.next()) {
+			if(rs.next()) {
 				res = rs.getDouble(3) + "";
 			}
 		} catch(Exception error) {
@@ -140,16 +138,37 @@ public class FileUploadDownloadService {
 		return res;
 	}
 	
-	public String getProductName(String id) throws ClassNotFoundException, IOException {
+	public String getProductName(String id, String amount) throws ClassNotFoundException, IOException {
 		connect();
 		int productId = Integer.parseInt(id);
+		int productAmount = Integer.parseInt(amount);
 		String sql = "select * from products where id = " + productId;
 		String res = "";
 		try {
 			Statement st = con.createStatement();
 			ResultSet rs = st.executeQuery(sql);
-			while(rs.next()) {
+			if(rs.next()) {
 				res = rs.getString(2);
+				String sqlUpdate = "update products set amount=? where id=?";
+				try {
+					PreparedStatement stUpdate = con.prepareStatement(sqlUpdate);
+					// Update with new amount
+					if((rs.getInt(4) - productAmount) <= 0) {
+						String sqlDelete = "delete from products where id=?";
+						try {
+							PreparedStatement stDelete = con.prepareStatement(sqlDelete);
+							stDelete.setInt(1, productId);
+							stDelete.executeUpdate();
+						} catch(Exception error) {
+							System.out.println(error);
+						}
+					}
+					stUpdate.setInt(1, rs.getInt(4) - productAmount);
+					stUpdate.setInt(2, productId);
+					stUpdate.executeUpdate();
+				} catch(Exception error) {
+					System.out.println(error);
+				}
 			}
 		} catch(Exception error) {
 			System.out.println(error);

@@ -5,25 +5,53 @@ import org.apache.axis2.Constants;
 import org.apache.axis2.addressing.EndpointReference;
 import org.apache.axis2.client.Options;
 import org.apache.axis2.rpc.client.RPCServiceClient;
+import org.apache.axis2.transport.http.HTTPConstants;
+import org.apache.axis2.transport.http.impl.httpclient3.HttpTransportPropertiesImpl.Authenticator;
+import org.apache.commons.httpclient.auth.AuthPolicy;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.ObjectOutputStream;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Scanner;
 
 import org.apache.axiom.attachments.ByteArrayDataSource;
 
 import data.Customer;
-import data.Product;
 
 
 public class RPCClient {
     public static void main(String[] args) throws Exception {
         RPCServiceClient client = new RPCServiceClient();
         Options options = new Options();
-        EndpointReference targetEndPoint = new EndpointReference(
+        
+        String trustStorePath = "C:/Program Files/Apache Software Foundation/Tomcat 8.5/conf/my_truststore1".replace('/', File.separatorChar);
+        
+        System.setProperty("javax.net.ssl.trustStore", trustStorePath);
+        if (trustStorePath == null) {
+            System.out.println("javax.net.ssl.trustStore is not defined");
+        } else {
+            System.out.println("javax.net.ssl.trustStore = " + trustStorePath);
+        }
+        // Here we set the service address
+        EndpointReference targetEPR = new EndpointReference(
                 "https://localhost:8443/axis2/services/assignment_8");
-        options.setTo(targetEndPoint);
+        options.setTransportInProtocol(Constants.TRANSPORT_HTTPS);
+        // HttpTransportProperties.Authenticator
+        Authenticator authenticator = new Authenticator();
+        authenticator.setUsername("Lizzie");
+        authenticator.setPassword("T1000");
+        // Here we specify the host
+        authenticator.setHost("localhost");
+        authenticator.setAllowedRetry(true);
+        ArrayList<String> authSchemes = new ArrayList<String>();
+        authSchemes.add(AuthPolicy.BASIC);
+        authenticator.setAuthSchemes(authSchemes);
+        // Each request will be authenticated preemptively
+        authenticator.setPreemptiveAuthentication(true);
+        authenticator.setRealm("external-client");
+        options.setProperty(HTTPConstants.AUTHENTICATE, authenticator);
+        options.setTo(targetEPR);
         options.setProperty(org.apache.axis2.Constants.Configuration.ENABLE_MTOM, Constants.VALUE_TRUE);
         client.setOptions(options);
         
@@ -50,8 +78,13 @@ public class RPCClient {
 					if(!optionBuy.equals("F")) {
 						System.out.println("How many?");
 						count = Integer.parseInt(scanner.nextLine());
-						tempOrder += count + " " + getProductName(client, nameSpaceURI, optionBuy) + ";";
+						tempOrder += count + " " + getProductName(client, nameSpaceURI, optionBuy, count + "") + ";";
+						System.out.println("-----------------------------------");
+						System.out.println("Your Shopping carts: \n" + tempOrder);
+						System.out.println("-----------------------------------");
 						tempTotal += count * Double.parseDouble(getProductPrice(client, nameSpaceURI, optionBuy));
+						System.out.println("Your total \n" + tempTotal);
+						System.out.println("-----------------------------------");
 						count = 0;
 					} else {
 						System.out.println("Name: ");
@@ -116,10 +149,10 @@ public class RPCClient {
 		return (String)response[0];
     }
     
-    public static String getProductName(RPCServiceClient client, String serverNameSpaceURI, String id) throws AxisFault {
+    public static String getProductName(RPCServiceClient client, String serverNameSpaceURI, String id, String amout) throws AxisFault {
     	QName uploadByteArrayQName = new QName(serverNameSpaceURI, "getProductName");
 		// Here we use POJO to upload the byte array to the Web service.
-		Object[] response = client.invokeBlocking(uploadByteArrayQName, new Object[] { id },
+		Object[] response = client.invokeBlocking(uploadByteArrayQName, new Object[] { id, amout },
 				new Class[] { String.class });
 		// Here we print the results received from the Web service.
 		return (String)response[0];

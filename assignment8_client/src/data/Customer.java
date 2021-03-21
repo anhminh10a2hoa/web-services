@@ -1,7 +1,6 @@
 package data;
 
 import java.io.Serializable;
-import java.util.Date;
 
 public class Customer implements Serializable {
 	private static final long serialVersionUID = 1L;
