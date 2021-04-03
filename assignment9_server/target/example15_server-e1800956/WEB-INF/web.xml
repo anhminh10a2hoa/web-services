@@ -1,0 +1,38 @@
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+          http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+    version="3.0">
+    <display-name>RESTful Jersey File Handler</display-name>
+    
+   
+   <context-param>
+   <param-name>destination_dir</param-name>
+   <param-value>files</param-value>
+   </context-param>
+   
+   <listener>
+   <listener-class>util.ConfigListener</listener-class>
+   </listener>
+   
+    <servlet>
+        <servlet-name>jersey-serlvet</servlet-name>
+        <servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+        <init-param>
+            <param-name>jersey.config.server.provider.packages</param-name>
+            <param-value>rest.file.service</param-value>
+        </init-param>
+        
+        <!-- This parameter is necessary for file exchanging -->
+            <init-param>
+            <param-name>jersey.config.server.provider.classnames</param-name>
+            <param-value>org.glassfish.jersey.media.multipart.MultiPartFeature</param-value>
+        </init-param>
+        
+        
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>jersey-serlvet</servlet-name>
+        <url-pattern>/rest/*</url-pattern>
+    </servlet-mapping>
+</web-app>
