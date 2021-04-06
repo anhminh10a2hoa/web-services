@@ -1,0 +1,74 @@
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
+          http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+	version="3.0">
+	<display-name>RESTful Jersey File Handler</display-name>
+
+
+	<context-param>
+		<param-name>destination_dir</param-name>
+		<param-value>files</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>util.ConfigListener</listener-class>
+	</listener>
+	
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>File Handler Service</web-resource-name>
+			<url-pattern>/rest/*</url-pattern>
+			<http-method>GET</http-method> <http-method>POST</http-method> <http-method>PUT</http-method> 
+				<http-method>DELETE</http-method>
+		</web-resource-collection>
+		<user-data-constraint>
+			<transport-guarantee>CONFIDENTIAL</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+
+
+	<!-- Security constraint for upload and download services -->
+	<!-- Here we put the service behind HTTPS, and allow members of role user 
+		to access the service after authentication -->
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>Upload and Download Services</web-resource-name>
+			<url-pattern>/rest/file/service/*</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>user</role-name>
+		</auth-constraint>
+	</security-constraint>
+
+
+	<!-- Define the login configuration for this application -->
+	<login-config>
+		<auth-method>BASIC</auth-method>
+		<realm-name>Tomcat Manager Application</realm-name>
+	</login-config>
+
+	<servlet>
+		<servlet-name>jersey-serlvet</servlet-name>
+		<servlet-class>org.glassfish.jersey.servlet.ServletContainer</servlet-class>
+		<init-param>
+			<param-name>jersey.config.server.provider.packages</param-name>
+			<param-value>rest.file.service</param-value>
+		</init-param>
+
+		<!-- This parameter is necessary for file exchanging -->
+		<init-param>
+			<param-name>jersey.config.server.provider.classnames</param-name>
+			<param-value>org.glassfish.jersey.media.multipart.MultiPartFeature</param-value>
+		</init-param>
+
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>jersey-serlvet</servlet-name>
+		<url-pattern>/rest/*</url-pattern>
+	</servlet-mapping>
+
+	<!-- Here we put all services behind HTTPS -->
+	
+</web-app>
